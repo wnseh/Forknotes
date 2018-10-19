@@ -1,7 +1,7 @@
 import os
 from flask import Flask, request, redirect, url_for, render_template, send_from_directory
 from werkzeug.utils import secure_filename
-from .. import predict
+from predict import predict
 app = Flask(__name__)
 
 UPLOAD_FOLDER = os.path.dirname(os.path.abspath(__file__)) + '/uploads/'
@@ -29,21 +29,23 @@ def index():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            process_file(os.path.join(app.config['UPLOAD_FOLDER'], filename), filename)
-            return redirect(url_for('uploaded_file', filename=filename))
+            out_file = process_file(os.path.join(app.config['UPLOAD_FOLDER'], filename), filename)
+            return redirect(url_for('uploaded_file', filename=out_file))
     return render_template('index.html')
 
 def process_file(path, filename):
     #predict
-    filename = 'downloaded_text.txt'
-    full_path = os.path.join(app.config['DOWNLOAD_FOLDER'], filename)
+    input_filename = filename
+    output_filename = 'downloaded_text.txt'
+    full_path = os.path.join(app.config['DOWNLOAD_FOLDER'], output_filename)
     file1 = open(full_path, 'w')
     predicted_text = 'ssup' 
-    #TODO predicted_text = predict(full_path)
+    #TODO predicted_text = predict(path+input_filename)
     file1.write(predicted_text)
-    file1.close
+    file1.close()
+    return output_filename
 
-@app.rout('/uploads/<filename>')
+@app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['DOWNLOAD_FOLDER'],filename, as_attachment=True)
 
