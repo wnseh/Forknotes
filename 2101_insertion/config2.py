@@ -18,7 +18,7 @@ test_dir = 'mjsynth.tar/mnt/ramdisk/max/90kDICT32px/testImage/test.png'
 
 # for CRNN_with_STN
 learning_rate = 0.0001  # learning rate, 0.002 for default
-weight_path = 'model/weights_best_STN.04-16.35.hdf5'
+weight_path = 'model/weights_best_STN.14-13.90.hdf5'
 model_path = 'model/weights_for_predict_STN.hdf5'
 cp_save_path = 'mjsynth.tar/mnt/ramdisk/max/weights_best_STN.{epoch:02d}-{loss:.2f}.hdf5' \
     # save checkpoint path
